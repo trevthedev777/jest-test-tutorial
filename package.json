@@ -1,0 +1,22 @@
+{
+  "name": "jest-test-tutorial",
+  "version": "1.0.0",
+  "description": "Initialise your workspace by typing in your terminal  ``` npm init ``` For this tutorial we are using an older version of Jest In your terminal type: ``` npm install --save-dev jest@26.6.3 ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trevthedev777/jest-test-tutorial.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/trevthedev777/jest-test-tutorial/issues"
+  },
+  "homepage": "https://github.com/trevthedev777/jest-test-tutorial#readme",
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
+}
