@@ -8,7 +8,11 @@ describe('Calculator', () => { //Top level Parent Describe
         test('should return 42 for 20 + 22', () => {
             // it should expect<functionName(param1, param2)> and .toBe = it SHOULD be 42
             expect(addition(20, 22)).toBe(42);
-        })
+        });
+        test('should return 73 for 42 + 31', () => {
+            // it should expect<functionName(param1, param2)> and .toBe = it SHOULD be 73
+            expect(addition(42, 31)).toBe(73);
+        });
     });
     describe('Subtraction function', () => { // Second Level Describe
 
