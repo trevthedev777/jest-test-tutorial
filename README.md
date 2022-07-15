@@ -1,10 +1,12 @@
 # Jest Testing JavaScript Framework Tutorial
 
 ## Table of Contents
-- Writing our first test
-- Breaking our test
-- Mocking
-- Testing the DOM
+- [Writing our first test](#writing-our-first-test)
+- [Breaking our test](#breaking-our-test)
+- [Mocking](#mocking)
+- [Testing the DOM](#testing-the-dom)
+
+## Writing our first test
 
 ### What is it?
 Red-Green-Refactor in Jest
@@ -190,6 +192,8 @@ Our test has passed this time, well done on passing your first test, but be awar
 - We set an expectation
 - We wrote just enough code to pass the test
 
+[Back to Home](#jest-testing-javascript-framework-tutorial)
+
 ## Breaking Our Test
 
 In order to break our test, we need to add to our expectations declared in the test script, for the purpose of this tutorial, we are demonstrating this
@@ -363,6 +367,8 @@ The hard work is not done yet, this is the easy part, to produce a concise and s
 - How to be in the red part of the cycle when the test fails
 - How to get back into the green by passing our tests
 
+[Back to Home](#jest-testing-javascript-framework-tutorial)
+
 ## Mocking
 
 *Due to a change in Jest's default configuration, you need to add the following code to the top of your test file:*
@@ -373,6 +379,154 @@ The hard work is not done yet, this is the easy part, to produce a concise and s
 
 ```
  *Your tests will fail if you forget to insert this* 
+
+ ## Mocking
+
+Well done on making it this far :), As we continue with the tutorial, we will be looking at 'Mocking', for this demonstration, you can copy and paste the index.html and then we need to create a button click function in a new script, so in the /scripts folder, create a new file and call it
+```
+button.js
+```
+
+Inside this .js file I have inserted some basic code to change the innerText of the button to originally show:
+
+<button>Click Me</button>
+
+and after the function is fired, to change to:
+
+<button>Click Me</button>
+
+<p>You Clicked</p>
+
+The code to create this function is
+
+```
+function buttonClick() {
+    document.getElementById('par').innerHTML = 'You Clicked';
+};
+
+module.exports = buttonClick;
+```
+
+Here we are testing to see if the contents of the <p> really do change, to do this we will need to use a 'mock DOM', in the
+
+```
+button.test.js
+```
+
+I added the following test requirement
+
+```
+/**
+ * @jest-environment jsdom <--- YOU NEED THIS TO RUN A SIMULATED DOM
+ */
+
+ const buttonClick = require("../button");
+
+ beforeEach(() => {
+     document.body.innerHTML = "<p id='par'></p>";
+ });
+ 
+ describe("DOM tests", () => {
+     test("Expects content to change", () => {
+         buttonClick();
+         expect(document.getElementById("par")
+             .innerHTML).toEqual("You Clicked");
+     });
+ });
+ ```
+Great, then in your terminal run
+
+```
+npm test
+```
+
+If you have followed correctly so far, you should get the following response from the output
+
+```
+
+> jest-test-tutorial@1.0.0 test
+> jest
+
+ PASS  scripts/tests/button.test.js
+ PASS  scripts/tests/calc.test.js
+
+Test Suites: 2 passed, 2 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        1.114 s
+Ran all test suites.
+```
+
+#### Summary
+
+- used beforeEach() directive, which runs before each test
+- Used the mock DOM to test interactivity
+
+[Back to Home](#jest-testing-javascript-framework-tutorial)
+
+## Testing The DOM
+
+The final step of this tutorial will allow us to test the entire 'index.html' if our mock DOM environment, its really simple, just add to the following code to your 
+```
+button.test.js
+```
+
+you will notice that the test has been refactored to include the whole 'index.html' file
+
+```
+/**
+ * @jest-environment jsdom
+ */
+
+ const buttonClick = require("../button");
+
+ beforeEach(() => {
+     let fs = require('fs'); // This is a file system handling module which allows you to open and read files
+     let fileContents = fs.readFileSync('index.html', 'utf-8'); // Open the file you want to test
+     document.open();
+     document.write(fileContents);
+     document.close();
+ });
+ 
+ describe("DOM tests", () => {
+     test("Expects content to change", () => {
+         buttonClick();
+         expect(document.getElementById("par")
+             .innerHTML).toEqual("You Clicked");
+     });
+     test("h1 should exist", () => {
+        expect(document.getElementsByTagName('h1').length).toBe(1); // the one (1) is to see how many of those elements should exist in the file
+     })
+ });
+```
+
+Now, as usual, run the test in your terminal using
+
+```
+npm test
+```
+
+If you have followed correctly, your output should read
+
+```
+
+> jest-test-tutorial@1.0.0 test
+> jest
+
+ PASS  scripts/tests/button.test.js
+ PASS  scripts/tests/calc.test.js
+
+Test Suites: 2 passed, 2 total
+Tests:       4 passed, 4 total
+Snapshots:   0 total
+Time:        1.098 s
+Ran all test suites.
+```
+#### Summary
+
+- How to install Jest testing suite
+- Build simple tests to match the output of JavaScript functions
+- Build more advanced tests to check the DOM
 
 ### References
 - Jest: https://jestjs.io/docs/getting-started
