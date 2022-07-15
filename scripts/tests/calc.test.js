@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 // import the function from the file you want to run the test on 
 const addition = require('../calc');
 
